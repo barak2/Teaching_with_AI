@@ -2,81 +2,110 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אתגר הבגרות באנגלית</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Fun with Words</title>
 
     <style>
         :root {
             --primary: #58cc02;
             --primary-dark: #46a302;
             --error: #ff4b4b;
-            --text: #3c3c3c;
+            --text: #2f2f2f;
             --bg: #ffffff;
             --card-border: #e5e5e5;
+            --accent: #ffc800;
             --timer-green: #58cc02;
             --timer-yellow: #ffc800;
             --timer-red: #ff4b4b;
             --blue: #1cb0f6;
             --orange: #ff9600;
+            --purple: #7b3ff2;
         }
 
         * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
 
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f7f7f7;
             color: var(--text);
-            margin: 0;
-            padding: 20px;
+            padding: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100svh;
         }
 
         .game-container {
             background: var(--bg);
             border: 2px solid var(--card-border);
             border-radius: 20px;
-            padding: 30px;
-            width: 100%;
-            max-width: 520px;
-            box-shadow: 0 8px 0 var(--card-border);
+            padding: 18px;
+            width: min(100%, 520px);
+            height: min(100%, 820px);
+            max-height: calc(100svh - 16px);
+            box-shadow: 0 5px 0 var(--card-border);
             text-align: center;
             position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .screen { display: none; }
         .screen.active { display: block; }
 
-        .start-icon {
-            font-size: 60px;
-            margin-bottom: 10px;
+        #game-screen.active {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .start-icon { font-size: clamp(38px, 7svh, 58px); margin-bottom: 6px; }
+
+        .title {
+            font-size: clamp(24px, 4svh, 32px);
+            margin: 4px 0 6px;
+            direction: ltr;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #777;
+            margin: 0 0 10px;
+            direction: ltr;
         }
 
         .intro-text {
-            font-size: 16px;
+            font-size: clamp(13px, 2.1svh, 16px);
             color: #668;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            line-height: 1.45;
+            margin: 8px 0 12px;
         }
 
         .mode-selector {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 20px 0;
+            gap: 10px;
+            margin: 12px 0;
         }
 
         .mode-btn {
             background: white;
             border: 2px solid var(--card-border);
             border-radius: 14px;
-            padding: 14px 8px;
-            font-size: 16px;
+            padding: 10px 7px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 0 var(--card-border);
+            box-shadow: 0 3px 0 var(--card-border);
             transition: all 0.1s ease;
         }
 
@@ -84,89 +113,67 @@
             border-color: var(--primary);
             background: #efffde;
             color: var(--primary-dark);
-            box-shadow: 0 4px 0 var(--primary);
+            box-shadow: 0 3px 0 var(--primary);
         }
 
-        .mode-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
+        .mode-btn:active { transform: translateY(3px); box-shadow: none; }
 
         .play-btn {
             background-color: var(--primary);
             color: white;
             border: none;
             border-radius: 15px;
-            padding: 18px;
-            font-size: 22px;
+            padding: 14px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            margin-top: 12px;
-            box-shadow: 0 5px 0 var(--primary-dark);
+            margin-top: 8px;
+            box-shadow: 0 4px 0 var(--primary-dark);
             transition: all 0.1s ease;
         }
 
         .play-btn:disabled {
             background-color: #b7b7b7;
-            box-shadow: 0 5px 0 #8a8a8a;
+            box-shadow: 0 4px 0 #8a8a8a;
             cursor: not-allowed;
         }
 
-        .play-btn:active:not(:disabled) {
-            transform: translateY(5px);
-            box-shadow: none;
-        }
+        .play-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: none; }
 
         .top-info {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 8px;
             font-weight: bold;
-            font-size: 16px;
-            gap: 10px;
+            font-size: clamp(13px, 2svh, 16px);
+            direction: rtl;
         }
 
-        .score-display {
-            color: var(--orange);
-            background: #fff8e5;
-            padding: 5px 12px;
+        .pill {
+            padding: 5px 10px;
             border-radius: 12px;
-            border: 1px solid #ffe285;
             white-space: nowrap;
+            line-height: 1.1;
         }
 
-        .level-display {
-            color: var(--blue);
-            background: #e5f6ff;
-            padding: 5px 12px;
-            border-radius: 12px;
-            border: 1px solid #82d4ff;
-            white-space: nowrap;
-        }
-
-        .mode-display {
-            color: #7b3ff2;
-            background: #f0e8ff;
-            padding: 5px 12px;
-            border-radius: 12px;
-            border: 1px solid #cfb7ff;
-            white-space: nowrap;
-        }
+        .score-display { color: var(--orange); background: #fff8e5; border: 1px solid #ffe285; justify-self: start; }
+        .level-display { color: var(--blue); background: #e5f6ff; border: 1px solid #82d4ff; justify-self: end; }
+        .mode-display { color: var(--purple); background: #f0e8ff; border: 1px solid #cfb7ff; justify-self: center; }
 
         .top-bar {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr auto;
             align-items: center;
-            margin-bottom: 20px;
-            gap: 15px;
+            gap: 10px;
+            margin-bottom: 8px;
         }
 
         .progress-container {
-            flex-grow: 1;
             background-color: var(--card-border);
-            height: 16px;
+            height: 12px;
             border-radius: 10px;
             overflow: hidden;
         }
@@ -175,121 +182,147 @@
             background-color: var(--primary);
             height: 100%;
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.25s ease;
         }
 
         .lives {
-            font-size: 20px;
+            font-size: clamp(15px, 2.4svh, 20px);
             color: var(--error);
             font-weight: bold;
             white-space: nowrap;
+            direction: ltr;
         }
 
         .status-row {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+            min-height: 36px;
         }
 
         .timer-box {
             background-color: var(--timer-green);
             color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 8px 20px;
+            font-size: clamp(16px, 2.7svh, 20px);
+            font-weight: 900;
+            padding: 6px 18px;
             border-radius: 50px;
-            transition: background-color 0.3s ease;
-            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
+            transition: background-color 0.25s ease;
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+            direction: ltr;
+            min-width: 82px;
         }
 
         .combo-box {
             background: linear-gradient(135deg, #ff5722, #ff9800);
             color: white;
-            font-size: 16px;
+            font-size: clamp(13px, 2.1svh, 16px);
             font-weight: bold;
-            padding: 8px 15px;
+            padding: 6px 12px;
             border-radius: 50px;
             display: none;
-            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
             animation: pulse 0.4s infinite alternate;
+            direction: ltr;
         }
 
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.08); }
-        }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.06); } }
 
         .task-badge {
-            font-size: 22px;
+            font-size: clamp(17px, 3svh, 23px);
             font-weight: 900;
-            padding: 10px 24px;
+            padding: 8px 22px;
             border-radius: 14px;
             display: inline-block;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             color: white;
             box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
-            letter-spacing: 0.5px;
+            letter-spacing: 0.2px;
+            direction: ltr;
         }
 
         .badge-completion { background-color: var(--blue); }
         .badge-synonym { background-color: var(--orange); }
         .badge-odd { background-color: var(--error); }
 
+        .question-box { min-height: 0; }
+
         .sentence {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: clamp(18px, 3.25svh, 25px);
+            font-weight: 800;
             direction: ltr;
-            line-height: 1.5;
-            margin-top: 5px;
-            margin-bottom: 25px;
+            line-height: 1.28;
+            margin: 0 0 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .highlight-word {
+            display: inline-block;
+            background: #fff2a8;
+            border: 2px solid #ffd84d;
+            color: #1f1f1f;
+            border-radius: 10px;
+            padding: 0 7px 2px;
+            margin-inline-start: 4px;
+            font-weight: 950;
+        }
+
+        .blank {
+            font-weight: 950;
+            color: var(--blue);
+            letter-spacing: 1px;
         }
 
         .options-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 8px;
+            margin-bottom: 8px;
+            min-height: 0;
         }
 
         .option-btn {
             background: white;
             border: 2px solid var(--card-border);
             border-radius: 12px;
-            padding: 15px;
-            font-size: 19px;
-            font-weight: bold;
+            padding: 10px 12px;
+            min-height: 45px;
+            font-size: clamp(16px, 2.6svh, 20px);
+            font-weight: 800;
             cursor: pointer;
             transition: all 0.1s ease;
-            box-shadow: 0 4px 0 var(--card-border);
+            box-shadow: 0 3px 0 var(--card-border);
             direction: ltr;
+            line-height: 1.18;
+            overflow-wrap: anywhere;
         }
 
         .option-btn:hover:not(:disabled) { background-color: #f1f1f1; }
-        .option-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: none; }
+        .option-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
 
         .option-btn.correct {
             background-color: #d7ffb8 !important;
             border-color: var(--primary) !important;
             color: var(--primary-dark) !important;
-            box-shadow: 0 4px 0 var(--primary) !important;
+            box-shadow: 0 3px 0 var(--primary) !important;
         }
 
         .option-btn.wrong {
             background-color: #ffdfe0 !important;
             border-color: var(--error) !important;
             color: var(--error) !important;
-            box-shadow: 0 4px 0 var(--error) !important;
+            box-shadow: 0 3px 0 var(--error) !important;
         }
 
         .points-feedback {
-            min-height: 28px;
-            font-size: 20px;
+            min-height: 22px;
+            font-size: clamp(15px, 2.3svh, 19px);
             font-weight: bold;
             color: var(--orange);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            direction: rtl;
         }
 
         .answer-explanation {
@@ -297,11 +330,12 @@
             background: #f7f7f7;
             border: 2px solid var(--card-border);
             border-radius: 12px;
-            padding: 12px;
-            margin: 8px 0 16px;
-            font-size: 16px;
+            padding: 8px 10px;
+            margin: 0 0 8px;
+            font-size: clamp(13px, 2svh, 15px);
             font-weight: bold;
-            line-height: 1.5;
+            line-height: 1.35;
+            direction: rtl;
         }
 
         .next-btn {
@@ -309,38 +343,35 @@
             color: white;
             border: none;
             border-radius: 12px;
-            padding: 15px;
+            padding: 11px;
             width: 100%;
-            font-size: 18px;
+            font-size: clamp(16px, 2.4svh, 18px);
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 0 var(--primary-dark);
+            box-shadow: 0 3px 0 var(--primary-dark);
             display: none;
+            margin-top: auto;
         }
 
-        .next-btn:active { transform: translateY(4px); box-shadow: none; }
+        .next-btn:active { transform: translateY(3px); box-shadow: none; }
 
         .stats-box {
             background: #f1f1f1;
             border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
+            padding: 14px;
+            margin: 12px 0;
             border: 2px solid var(--card-border);
         }
 
-        .stat-item {
-            font-size: 19px;
-            margin: 8px 0;
-            font-weight: bold;
-        }
+        .stat-item { font-size: 16px; margin: 6px 0; font-weight: bold; }
 
         .badge-title {
-            font-size: 24px;
+            font-size: 20px;
             color: var(--orange);
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 6px;
             background: #fff3e0;
-            padding: 12px;
+            padding: 9px;
             border-radius: 12px;
             border: 2px dashed #ffb74d;
             display: inline-block;
@@ -351,51 +382,37 @@
             background: #fff5f5;
             border: 2px solid #ffccd0;
             border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
+            padding: 12px;
+            margin: 10px 0;
             text-align: right;
-            max-height: 240px;
+            max-height: 25svh;
             overflow-y: auto;
         }
 
         .report-title {
             font-weight: bold;
             color: #c53030;
-            font-size: 18px;
-            margin-bottom: 15px;
+            font-size: 16px;
+            margin-bottom: 8px;
             border-bottom: 2px solid #ffccd0;
-            padding-bottom: 5px;
+            padding-bottom: 4px;
         }
 
-        .mistake-list {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
+        .mistake-list { margin: 0; padding: 0; list-style: none; }
 
         .mistake-item {
-            font-size: 18px;
-            padding: 8px 0;
+            font-size: 15px;
+            padding: 6px 0;
             border-bottom: 1px dashed #fcd4d6;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .mistake-item:last-child { border-bottom: none; }
-
-        .mistake-eng {
-            font-weight: bold;
-            color: #1a0dab;
-            font-family: "Segoe UI", sans-serif;
-            direction: ltr;
-        }
-
-        .mistake-heb {
-            font-weight: 600;
-            color: var(--text);
-        }
+        .mistake-eng { font-weight: bold; color: #1a0dab; direction: ltr; }
+        .mistake-heb { font-weight: 600; color: var(--text); }
 
         .perfect-message {
             display: none;
@@ -405,120 +422,142 @@
             font-size: 16px;
         }
 
+        .restart-btn, .secondary-btn {
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
         .restart-btn {
             background-color: var(--primary);
             color: white;
             border: none;
-            border-radius: 12px;
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 0 var(--primary-dark);
-            margin-top: 10px;
-            width: 100%;
+            box-shadow: 0 3px 0 var(--primary-dark);
+            margin-top: 8px;
         }
-
-        .restart-btn:active { transform: translateY(4px); box-shadow: none; }
 
         .secondary-btn {
             background-color: white;
             color: var(--text);
             border: 2px solid var(--card-border);
-            border-radius: 12px;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 0 var(--card-border);
-            margin-top: 10px;
-            width: 100%;
+            box-shadow: 0 3px 0 var(--card-border);
+            margin-top: 8px;
         }
 
-        .secondary-btn:active { transform: translateY(4px); box-shadow: none; }
+        .restart-btn:active, .secondary-btn:active { transform: translateY(3px); box-shadow: none; }
 
         .global-highscore {
-            margin-top: 25px;
-            font-size: 14px;
+            margin-top: 16px;
+            font-size: 13px;
             font-weight: bold;
             color: #888;
-            line-height: 1.7;
+            line-height: 1.55;
         }
 
         .error-message {
             display: none;
-            margin-top: 15px;
+            margin-top: 12px;
             color: var(--error);
             font-weight: bold;
-            line-height: 1.5;
+            line-height: 1.45;
+            font-size: 14px;
         }
 
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .game-container { padding: 20px; }
-            .top-info { flex-direction: column; }
-            .mode-selector { grid-template-columns: 1fr; }
-            .sentence { font-size: 21px; }
-            .option-btn { font-size: 17px; }
+        #autotest-result { position: fixed; left: 0; bottom: 0; z-index: 9999; background: white; color: black; font-size: 10px; direction: ltr; }
+
+        @media (max-width: 480px), (max-height: 760px) {
+            body { padding: 5px; }
+            .game-container { padding: 10px; border-radius: 18px; max-height: calc(100svh - 10px); box-shadow: 0 3px 0 var(--card-border); }
+            .top-info { gap: 5px; margin-bottom: 6px; }
+            .pill { padding: 5px 8px; border-radius: 10px; }
+            .top-bar { margin-bottom: 6px; gap: 7px; }
+            .progress-container { height: 11px; }
+            .status-row { margin-bottom: 6px; min-height: 32px; }
+            .timer-box { padding: 5px 15px; min-width: 74px; }
+            .task-badge { padding: 7px 18px; margin-bottom: 8px; border-radius: 13px; }
+            .sentence { margin-bottom: 9px; line-height: 1.22; }
+            .options-grid { gap: 7px; margin-bottom: 6px; }
+            .option-btn { min-height: 42px; padding: 8px 10px; border-radius: 11px; }
+            .points-feedback { min-height: 19px; margin-bottom: 4px; }
+            .answer-explanation { padding: 7px; margin-bottom: 6px; }
+            .next-btn { padding: 9px; }
+        }
+
+        @media (max-height: 680px) {
+            .top-info { font-size: 12px; }
+            .lives { font-size: 15px; }
+            .timer-box { font-size: 15px; padding: 4px 12px; }
+            .combo-box { font-size: 12px; padding: 5px 9px; }
+            .task-badge { font-size: 16px; padding: 6px 14px; margin-bottom: 6px; }
+            .sentence { font-size: 16px; margin-bottom: 7px; }
+            .option-btn { min-height: 38px; font-size: 15px; padding: 7px 9px; }
+            .points-feedback { font-size: 14px; min-height: 17px; }
+            .answer-explanation { font-size: 12px; }
+            .next-btn { font-size: 15px; padding: 8px; }
+        }
+
+        @media (max-width: 360px) {
+            .top-info { grid-template-columns: 1fr 1fr; }
+            .mode-display { display: none; }
+            .score-display { justify-self: start; }
+            .level-display { justify-self: end; }
+            .sentence { font-size: 16px; }
+            .option-btn { font-size: 15px; }
         }
     </style>
 </head>
 
 <body>
-    <div class="game-container">
+    <div class="game-container" id="game-container">
         <div id="start-screen" class="screen active">
-            <div class="start-icon">⚔️🔮👑</div>
-            <h1 style="font-size: 28px; margin-bottom: 10px;">🏆 אתגר הבגרות באנגלית</h1>
+            <div class="start-icon">鈿旓笍馃敭馃憫</div>
+            <h1 class="title">Fun with Words</h1>
+            <p class="subtitle">YG 路 Kugel English Practice</p>
 
             <p class="intro-text">
-                יש לך <b>20 שניות</b> לכל שאלה.<br>
-                ענה מהר יותר כדי לקבל <b>בונוס זמן</b> גדול.<br>
-                רצף תשובות נכונות יקפיץ את המכפיל שלך עד פי 10.<br>
-                בסוף תקבל דוח מילים לחזרה.
+                讬砖 诇讱 <b>20 砖谞讬讜转</b> 诇讻诇 砖讗诇讛.<br>
+                注谞讛 诪讛专 讬讜转专 讻讚讬 诇拽讘诇 <b>讘讜谞讜住 讝诪谉</b> 讙讚讜诇.<br>
+                专爪祝 转砖讜讘讜转 谞讻讜谞讜转 讬拽驻讬抓 讗转 讛诪讻驻讬诇 砖诇讱 注讚 驻讬 10.<br>
+                讘住讜祝 转拽讘诇 讚讜讞 诪讬诇讬诐 诇讞讝专讛.
             </p>
 
             <div class="mode-selector">
                 <button id="challenge-mode-btn" class="mode-btn active-mode" type="button" onclick="setGameMode('challenge')">
-                    מצב אתגר<br>
-                    <span style="font-size: 13px; font-weight: normal;">3 חיים + ניקוד</span>
+                    诪爪讘 讗转讙专<br>
+                    <span style="font-size: 12px; font-weight: normal;">3 讞讬讬诐 + 谞讬拽讜讚</span>
                 </button>
 
                 <button id="practice-mode-btn" class="mode-btn" type="button" onclick="setGameMode('practice')">
-                    מצב תרגול<br>
-                    <span style="font-size: 13px; font-weight: normal;">בלי פסילה</span>
+                    诪爪讘 转专讙讜诇<br>
+                    <span style="font-size: 12px; font-weight: normal;">讘诇讬 驻住讬诇讛</span>
                 </button>
             </div>
 
             <button class="play-btn" id="start-play-btn" type="button" onclick="startGame()" disabled>
-                טוען מילים... ⏳
-            </button>
+                讟讜注谉 诪讬诇讬诐... 鈴?            </button>
 
             <div class="error-message" id="load-error-message"></div>
-
-            <div class="global-highscore" id="global-highscore">
-                שיא אישי: 0 נקודות<br>
-                התואר הגבוה ביותר: 🥚 Egg / Novice<br>
-                משחקים ששוחקו: 0
-            </div>
+            <div class="global-highscore" id="global-highscore"></div>
         </div>
 
         <div id="game-screen" class="screen">
             <div class="top-info">
-                <div class="level-display" id="level-header">שאלה 1/30</div>
-                <div class="mode-display" id="mode-header">אתגר</div>
-                <div class="score-display" id="score-header">ניקוד: 0</div>
+                <div class="score-display pill" id="score-header">谞讬拽讜讚: 0</div>
+                <div class="mode-display pill" id="mode-header">讗转讙专</div>
+                <div class="level-display pill" id="level-header">砖讗诇讛 1/30</div>
             </div>
 
             <div class="top-bar">
-                <div class="lives" id="lives-display">❤️❤️❤️</div>
-                <div class="progress-container">
-                    <div class="progress-bar" id="progress-bar"></div>
-                </div>
+                <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
+                <div class="lives" id="lives-display">鉂わ笍鉂わ笍鉂わ笍</div>
             </div>
 
             <div class="status-row">
-                <div class="timer-box" id="timer-display">⏱️ 20</div>
-                <div class="combo-box" id="combo-display">🔥 קומבו: X3</div>
+                <div class="timer-box" id="timer-display">鈴憋笍 20</div>
+                <div class="combo-box" id="combo-display">馃敟 X3</div>
             </div>
 
             <div class="question-box">
@@ -529,47 +568,41 @@
             <div class="options-grid" id="options-container"></div>
             <div class="points-feedback" id="points-feedback"></div>
             <div class="answer-explanation" id="answer-explanation"></div>
-
-            <button class="next-btn" id="next-button" type="button" onclick="nextQuestion()">המשך</button>
+            <button class="next-btn" id="next-button" type="button" onclick="nextQuestion()">讛诪砖讱</button>
         </div>
 
         <div id="end-screen" class="screen">
-            <h1 id="end-title" style="font-size: 34px;">המשחק נגמר!</h1>
-            <p id="end-subtitle" style="font-size: 17px;"></p>
+            <h1 id="end-title" style="font-size: 30px; margin: 4px 0 6px;">讛诪砖讞拽 谞讙诪专!</h1>
+            <p id="end-subtitle" style="font-size: 15px; margin: 0;"></p>
 
             <div class="stats-box">
-                <div class="stat-item" id="final-level">שלב שהגעת אליו: 1</div>
-                <div class="stat-item" id="final-score">ניקוד סופי: 0</div>
-                <div class="stat-item" id="final-correct">תשובות נכונות: 0</div>
-                <div class="stat-item" id="final-wrong">טעויות / פספוסים: 0</div>
-
-                <div class="stat-item" id="highscore-alert" style="color: #46a302; display: none; font-size: 22px;">
-                    🎉 שיא אישי חדש! 🎉
-                </div>
-
-                <div style="margin-top: 15px; color: #888;">התואר הרשמי שהרווחת:</div>
-                <br>
-                <div class="badge-title" id="final-badge">🥚 Egg / Novice</div>
+                <div class="stat-item" id="final-level">砖诇讘 砖讛讙注转 讗诇讬讜: 1</div>
+                <div class="stat-item" id="final-score">谞讬拽讜讚 住讜驻讬: 0</div>
+                <div class="stat-item" id="final-correct">转砖讜讘讜转 谞讻讜谞讜转: 0</div>
+                <div class="stat-item" id="final-wrong">讟注讜讬讜转 / 驻住驻讜住讬诐: 0</div>
+                <div class="stat-item" id="highscore-alert" style="color: #46a302; display: none; font-size: 20px;">馃帀 砖讬讗 讗讬砖讬 讞讚砖! 馃帀</div>
+                <div style="margin-top: 10px; color: #888;">讛转讜讗专 讛专砖诪讬 砖讛专讜讜讞转:</div>
+                <div class="badge-title" id="final-badge">馃 Egg / Novice</div>
             </div>
 
             <div id="report-container" class="report-box">
-                <div class="report-title" id="report-title">📝 מילים שכדאי לחזור עליהן:</div>
-                <div id="perfect-message" class="perfect-message">💯 משחק מושלם! לא נעשתה אף טעות!</div>
+                <div class="report-title" id="report-title">馃摑 诪讬诇讬诐 砖讻讚讗讬 诇讞讝讜专 注诇讬讛谉:</div>
+                <div id="perfect-message" class="perfect-message">馃挴 诪砖讞拽 诪讜砖诇诐! 诇讗 谞注砖转讛 讗祝 讟注讜转!</div>
                 <ul class="mistake-list" id="report-list"></ul>
             </div>
 
-            <button class="restart-btn" type="button" onclick="startGame()">Try Again? 🔄</button>
-            <button class="secondary-btn" type="button" onclick="showStartScreen()">חזרה למסך הראשי</button>
+            <button class="restart-btn" type="button" onclick="startGame()">Try Again? 馃攧</button>
+            <button class="secondary-btn" type="button" onclick="showStartScreen()">讞讝专讛 诇诪住讱 讛专讗砖讬</button>
         </div>
     </div>
 
     <script>
         const STORAGE_KEYS = {
-            highScore: "english_quiz_highscore_v10",
-            highTitle: "english_quiz_hightitle_v10",
-            gamesPlayed: "english_quiz_games_played_v10",
-            totalCorrect: "english_quiz_total_correct_v10",
-            totalWrong: "english_quiz_total_wrong_v10"
+            highScore: "fun_with_words_highscore_v12",
+            highTitle: "fun_with_words_hightitle_v12",
+            gamesPlayed: "fun_with_words_games_played_v12",
+            totalCorrect: "fun_with_words_total_correct_v12",
+            totalWrong: "fun_with_words_total_wrong_v12"
         };
 
         const QUESTIONS_PER_GAME = 30;
@@ -577,10 +610,31 @@
         const CHALLENGE_LIVES = 3;
 
         const taskSettings = {
-            completion: { badgeText: "השלמת משפט", badgeClass: "badge-completion" },
-            synonym: { badgeText: "מילה נרדפת", badgeClass: "badge-synonym" },
-            odd: { badgeText: "יוצא דופן", badgeClass: "badge-odd" }
+            completion: { badgeText: "Fill-In Sentence", badgeClass: "badge-completion" },
+            synonym: { badgeText: "Synonym", badgeClass: "badge-synonym" },
+            odd: { badgeText: "Odd Word Out", badgeClass: "badge-odd" }
         };
+
+        const titleLevels = [
+            { min: 38000, title: "English God", icons: "馃憫鉁? },
+            { min: 30000, title: "English AI", icons: "馃" },
+            { min: 23500, title: "Grammar Alien III", icons: "馃懡馃懡馃懡" },
+            { min: 18000, title: "Grammar Alien II", icons: "馃懡馃懡" },
+            { min: 13500, title: "Grammar Alien I", icons: "馃懡" },
+            { min: 10000, title: "Boss III", icons: "馃憫馃憫馃憫" },
+            { min: 7400, title: "Boss II", icons: "馃憫馃憫" },
+            { min: 5200, title: "Boss I", icons: "馃憫" },
+            { min: 3600, title: "Wizard III", icons: "馃馃馃" },
+            { min: 2500, title: "Wizard II", icons: "馃馃" },
+            { min: 1700, title: "Wizard I", icons: "馃" },
+            { min: 1150, title: "Knight III", icons: "馃洝锔忦煕★笍馃洝锔? },
+            { min: 750, title: "Knight II", icons: "馃洝锔忦煕★笍" },
+            { min: 450, title: "Knight I", icons: "馃洝锔? },
+            { min: 250, title: "Archer II", icons: "馃徆馃徆" },
+            { min: 100, title: "Archer I", icons: "馃徆" },
+            { min: 30, title: "Grammar Worm", icons: "馃悰" },
+            { min: 0, title: "Egg / Novice", icons: "馃" }
+        ];
 
         let audioCtx = null;
         let masterVocabularyDatabase = [];
@@ -612,29 +666,25 @@
         function playSound(type) {
             const ctx = getAudioContext();
             if (!ctx) return;
-
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             osc.connect(gain);
             gain.connect(ctx.destination);
             const now = ctx.currentTime;
-
             if (type === "correct") {
                 osc.type = "sine";
                 osc.frequency.setValueAtTime(587.33, now);
                 osc.frequency.setValueAtTime(880, now + 0.08);
                 gain.gain.setValueAtTime(0.1, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-                osc.start(now);
-                osc.stop(now + 0.3);
+                osc.start(now); osc.stop(now + 0.3);
             } else if (type === "wrong") {
                 osc.type = "sawtooth";
                 osc.frequency.setValueAtTime(130, now);
                 osc.frequency.linearRampToValueAtTime(100, now + 0.25);
                 gain.gain.setValueAtTime(0.15, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-                osc.start(now);
-                osc.stop(now + 0.3);
+                osc.start(now); osc.stop(now + 0.3);
             }
         }
 
@@ -665,22 +715,18 @@
 
         function updateStartStats() {
             const savedHighScore = getStorageNumber(STORAGE_KEYS.highScore);
-            const savedHighTitle = localStorage.getItem(STORAGE_KEYS.highTitle) || "🥚 Egg / Novice";
+            const savedHighTitle = localStorage.getItem(STORAGE_KEYS.highTitle) || "馃 Egg / Novice";
             const gamesPlayed = getStorageNumber(STORAGE_KEYS.gamesPlayed);
             const totalCorrect = getStorageNumber(STORAGE_KEYS.totalCorrect);
             const totalWrong = getStorageNumber(STORAGE_KEYS.totalWrong);
-
             const box = document.getElementById("global-highscore");
             box.textContent = "";
-
-            const lines = [
-                `שיא אישי: ${savedHighScore} נקודות`,
-                `התואר הגבוה ביותר: ${savedHighTitle}`,
-                `משחקים ששוחקו: ${gamesPlayed}`,
-                `סה״כ נכונות: ${totalCorrect} | סה״כ טעויות: ${totalWrong}`
-            ];
-
-            lines.forEach(text => {
+            [
+                `砖讬讗 讗讬砖讬: ${savedHighScore} 谞拽讜讚讜转`,
+                `讛转讜讗专 讛讙讘讜讛 讘讬讜转专: ${savedHighTitle}`,
+                `诪砖讞拽讬诐 砖砖讜讞拽讜: ${gamesPlayed}`,
+                `住讛状讻 谞讻讜谞讜转: ${totalCorrect} | 住讛状讻 讟注讜讬讜转: ${totalWrong}`
+            ].forEach(text => {
                 const line = document.createElement("div");
                 line.textContent = text;
                 box.appendChild(line);
@@ -689,6 +735,7 @@
 
         function showStartScreen() {
             clearInterval(timerInterval);
+            gameEnded = true;
             switchScreen("start-screen");
             updateStartStats();
             if (!vocabularyLoaded) fetchVocabularyData();
@@ -697,76 +744,61 @@
         async function fetchVocabularyData() {
             const startBtn = document.getElementById("start-play-btn");
             const errorBox = document.getElementById("load-error-message");
-
             startBtn.disabled = true;
-            startBtn.textContent = "טוען מילים... ⏳";
+            startBtn.textContent = "讟讜注谉 诪讬诇讬诐... 鈴?;
             errorBox.style.display = "none";
             errorBox.textContent = "";
-
             try {
                 const response = await fetch("words.json", { cache: "no-store" });
-                if (!response.ok) throw new Error("לא נמצא קובץ words.json או שהטעינה נכשלה.");
-
+                if (!response.ok) throw new Error("words.json was not found");
                 const rawData = await response.json();
-                if (!Array.isArray(rawData)) throw new Error("קובץ words.json חייב להיות מערך JSON.");
-
+                if (!Array.isArray(rawData)) throw new Error("words.json must be an array");
                 const validData = validateVocabularyData(rawData);
-                const uniqueData = removeDuplicateWords(validData);
-
-                if (uniqueData.length < QUESTIONS_PER_GAME) {
-                    throw new Error(`נמצאו רק ${uniqueData.length} שאלות תקינות. נדרשות לפחות ${QUESTIONS_PER_GAME}.`);
+                if (validData.length < QUESTIONS_PER_GAME) {
+                    throw new Error(`Only ${validData.length} valid questions found`);
                 }
-
-                masterVocabularyDatabase = uniqueData;
+                masterVocabularyDatabase = validData;
                 vocabularyLoaded = true;
-                startBtn.textContent = "מתחילים לשחק! 🚀";
+                startBtn.textContent = "诪转讞讬诇讬诐 诇砖讞拽! 馃殌";
                 startBtn.disabled = false;
+                runAutoTestIfNeeded();
             } catch (error) {
                 console.error(error);
                 vocabularyLoaded = false;
-                startBtn.textContent = "טעינת מילים נכשלה";
+                startBtn.textContent = "讟注讬谞转 诪讬诇讬诐 谞讻砖诇讛";
                 startBtn.disabled = true;
                 errorBox.style.display = "block";
-                errorBox.textContent = "לא הצלחנו לטעון את words.json. ודא שהקובץ נמצא באותה תיקייה עם index.html ושהמבנה שלו תקין.";
+                errorBox.textContent = "诇讗 讛爪诇讞谞讜 诇讟注讜谉 讗转 words.json. 讜讚讗 砖讛拽讜讘抓 谞诪爪讗 讘讗讜转讛 转讬拽讬讬讛 注诐 index.html 讜砖讛诪讘谞讛 砖诇讜 转拽讬谉.";
             }
         }
 
         function validateVocabularyData(data) {
             return data.filter(item => {
                 if (!item || typeof item !== "object") return false;
-
+                const hasValidType = ["completion", "synonym", "odd"].includes(item.type);
                 const hasValidSentence = typeof item.sentence === "string" && item.sentence.trim().length > 0;
                 const hasValidAnswer = typeof item.answer === "string" && item.answer.trim().length > 0;
                 const hasValidKeyword = typeof item.keyword === "string" && item.keyword.trim().length > 0;
                 const hasValidTranslation = typeof item.translation === "string" && item.translation.trim().length > 0;
-                const hasValidType = typeof item.type === "string" && taskSettings[item.type];
-                const hasValidOptions = Array.isArray(item.options) &&
-                    item.options.length >= 2 &&
-                    item.options.every(option => typeof option === "string" && option.trim().length > 0);
+                const hasValidOptions = Array.isArray(item.options) && item.options.length === 4 && item.options.every(option => typeof option === "string" && option.trim().length > 0);
                 const answerInOptions = hasValidOptions && item.options.includes(item.answer);
-
-                return hasValidSentence && hasValidAnswer && hasValidKeyword && hasValidTranslation && hasValidType && hasValidOptions && answerInOptions;
-            });
-        }
-
-        function removeDuplicateWords(data) {
-            const seen = new Set();
-            return data.filter(item => {
-                const key = item.keyword.toLowerCase().trim();
-                if (seen.has(key)) return false;
-                seen.add(key);
-                return true;
+                return hasValidType && hasValidSentence && hasValidAnswer && hasValidKeyword && hasValidTranslation && hasValidOptions && answerInOptions;
             });
         }
 
         function startGame() {
             if (masterVocabularyDatabase.length < QUESTIONS_PER_GAME) {
-                alert(`אין מספיק מילים תקינות במאגר. נדרשות לפחות ${QUESTIONS_PER_GAME} שאלות.`);
+                alert(`讗讬谉 诪住驻讬拽 砖讗诇讜转 转拽讬谞讜转 讘诪讗讙专. 谞讚专砖讜转 诇驻讞讜转 ${QUESTIONS_PER_GAME}.`);
                 return;
             }
-
             getAudioContext();
             gameQuestions = shuffleArray(masterVocabularyDatabase).slice(0, QUESTIONS_PER_GAME);
+            resetGameState();
+            switchScreen("game-screen");
+            loadQuestion();
+        }
+
+        function resetGameState() {
             currentIndex = 0;
             score = 0;
             lives = CHALLENGE_LIVES;
@@ -776,19 +808,14 @@
             currentCorrectCount = 0;
             currentWrongCount = 0;
             gameEnded = false;
-
             document.getElementById("combo-display").style.display = "none";
-            document.getElementById("mode-header").textContent = selectedGameMode === "challenge" ? "אתגר" : "תרגול";
-
-            switchScreen("game-screen");
-            loadQuestion();
+            document.getElementById("mode-header").textContent = selectedGameMode === "challenge" ? "讗转讙专" : "转专讙讜诇";
         }
 
         function startTimer() {
             clearInterval(timerInterval);
             timeLeft = SECONDS_PER_QUESTION;
             updateTimerUI();
-
             timerInterval = setInterval(() => {
                 timeLeft--;
                 updateTimerUI();
@@ -801,8 +828,7 @@
 
         function updateTimerUI() {
             const timerDisplay = document.getElementById("timer-display");
-            timerDisplay.textContent = `⏱️ ${timeLeft}`;
-
+            timerDisplay.textContent = `鈴憋笍 ${timeLeft}`;
             if (timeLeft > 12) {
                 timerDisplay.style.backgroundColor = "var(--timer-green)";
                 timerDisplay.style.color = "white";
@@ -815,36 +841,58 @@
             }
         }
 
+        function getTaskDisplayData(question) {
+            return taskSettings[question.type] || taskSettings.completion;
+        }
+
+        function renderSentence(question) {
+            const sentenceElement = document.getElementById("sentence-text");
+            sentenceElement.textContent = "";
+            if (question.type === "synonym") {
+                const prefix = document.createElement("span");
+                prefix.textContent = "Choose the closest meaning of:";
+                const target = document.createElement("span");
+                target.className = "highlight-word";
+                target.textContent = question.keyword;
+                sentenceElement.appendChild(prefix);
+                sentenceElement.appendChild(document.createTextNode(" "));
+                sentenceElement.appendChild(target);
+                return;
+            }
+            if (question.type === "completion") {
+                const parts = question.sentence.split("___");
+                sentenceElement.appendChild(document.createTextNode(parts[0] || ""));
+                const blank = document.createElement("span");
+                blank.className = "blank";
+                blank.textContent = "___";
+                sentenceElement.appendChild(blank);
+                if (parts.length > 1) sentenceElement.appendChild(document.createTextNode(parts.slice(1).join("___")));
+                return;
+            }
+            sentenceElement.textContent = question.sentence;
+        }
+
         function loadQuestion() {
             answered = false;
             document.getElementById("next-button").style.display = "none";
             document.getElementById("points-feedback").textContent = "";
-
             const explanation = document.getElementById("answer-explanation");
             explanation.style.display = "none";
             explanation.textContent = "";
-
-            document.getElementById("level-header").textContent = `שאלה ${currentIndex + 1}/${gameQuestions.length}`;
-            document.getElementById("score-header").textContent = `ניקוד: ${score}`;
+            document.getElementById("level-header").textContent = `砖讗诇讛 ${currentIndex + 1}/${gameQuestions.length}`;
+            document.getElementById("score-header").textContent = `谞讬拽讜讚: ${score}`;
             document.getElementById("progress-bar").style.width = `${(currentIndex / gameQuestions.length) * 100}%`;
-
-            if (selectedGameMode === "challenge") {
-                document.getElementById("lives-display").textContent = "❤️".repeat(lives);
-            } else {
-                document.getElementById("lives-display").textContent = "תרגול";
-            }
+            document.getElementById("lives-display").textContent = selectedGameMode === "challenge" ? "鉂わ笍".repeat(lives) : "转专讙讜诇";
 
             const currentQuestion = gameQuestions[currentIndex];
-            const taskData = taskSettings[currentQuestion.type] || taskSettings.completion;
+            const taskData = getTaskDisplayData(currentQuestion);
             const badgeElement = document.getElementById("task-badge-element");
             badgeElement.textContent = taskData.badgeText;
             badgeElement.className = `task-badge ${taskData.badgeClass}`;
-
-            document.getElementById("sentence-text").textContent = currentQuestion.sentence;
+            renderSentence(currentQuestion);
 
             const optionsContainer = document.getElementById("options-container");
             optionsContainer.textContent = "";
-
             shuffleArray(currentQuestion.options).forEach(option => {
                 const button = document.createElement("button");
                 button.className = "option-btn";
@@ -853,7 +901,6 @@
                 button.onclick = () => checkAnswer(button, option);
                 optionsContainer.appendChild(button);
             });
-
             startTimer();
         }
 
@@ -867,10 +914,8 @@
         function updateComboDisplay(multiplier) {
             const comboDisplay = document.getElementById("combo-display");
             if (multiplier > 1) {
-                let icon = "🔥";
-                if (multiplier === 5) icon = "⚡";
-                if (multiplier === 10) icon = "👑";
-                comboDisplay.textContent = `${icon} קומבו: X${multiplier}`;
+                let icon = multiplier === 10 ? "馃憫" : multiplier === 5 ? "鈿? : "馃敟";
+                comboDisplay.textContent = `${icon} X${multiplier}`;
                 comboDisplay.style.display = "inline-block";
             } else {
                 comboDisplay.style.display = "none";
@@ -879,13 +924,13 @@
 
         function showAnswerExplanation(question) {
             const explanation = document.getElementById("answer-explanation");
-            explanation.textContent = `התשובה הנכונה: ${question.answer} — פירוש: ${question.translation}`;
+            explanation.textContent = `讛转砖讜讘讛 讛谞讻讜谞讛: ${question.answer} | 驻讬专讜砖/专诪讝: ${question.translation}`;
             explanation.style.display = "block";
         }
 
         function addMistake(question) {
-            const key = question.keyword.toLowerCase().trim();
-            const alreadyExists = mistakesList.some(item => item.keyword.toLowerCase().trim() === key);
+            const key = `${question.type}|${question.keyword}|${question.answer}`.toLowerCase().trim();
+            const alreadyExists = mistakesList.some(item => `${item.type}|${item.keyword}|${item.answer}`.toLowerCase().trim() === key);
             if (!alreadyExists) mistakesList.push(question);
         }
 
@@ -894,40 +939,33 @@
             answered = true;
             clearInterval(timerInterval);
             getAudioContext();
-
             const currentQuestion = gameQuestions[currentIndex];
             const allButtons = document.querySelectorAll(".option-btn");
-            allButtons.forEach(button => button.disabled = true);
+            allButtons.forEach(button => { button.disabled = true; });
 
             if (selectedOption === currentQuestion.answer) {
                 selectedButton.classList.add("correct");
                 consecutiveCorrect++;
                 currentCorrectCount++;
                 playSound("correct");
-
                 const multiplier = getCurrentMultiplier();
                 updateComboDisplay(multiplier);
-
-                const basePoints = Math.max(timeLeft, 1) * 10;
-                const addedPoints = basePoints * multiplier;
+                const addedPoints = Math.max(timeLeft, 1) * 10 * multiplier;
                 score += addedPoints;
-
-                document.getElementById("score-header").textContent = `ניקוד: ${score}`;
-                document.getElementById("points-feedback").textContent = `+${addedPoints} נקודות`;
+                document.getElementById("score-header").textContent = `谞讬拽讜讚: ${score}`;
+                document.getElementById("points-feedback").textContent = `+${addedPoints} 谞拽讜讚讜转`;
             } else {
                 selectedButton.classList.add("wrong");
                 consecutiveCorrect = 0;
                 currentWrongCount++;
                 document.getElementById("combo-display").style.display = "none";
-                document.getElementById("points-feedback").textContent = "לא נכון";
+                document.getElementById("points-feedback").textContent = "诇讗 谞讻讜谉";
                 playSound("wrong");
                 addMistake(currentQuestion);
-
                 if (selectedGameMode === "challenge") {
                     lives--;
-                    document.getElementById("lives-display").textContent = "❤️".repeat(lives);
+                    document.getElementById("lives-display").textContent = "鉂わ笍".repeat(lives);
                 }
-
                 allButtons.forEach(button => {
                     if (button.textContent === currentQuestion.answer) button.classList.add("correct");
                 });
@@ -936,10 +974,9 @@
 
             if (selectedGameMode === "challenge" && lives <= 0) {
                 document.getElementById("next-button").style.display = "none";
-                setTimeout(() => endGame(false), 1000);
+                setTimeout(() => endGame(false), 900);
                 return;
             }
-
             document.getElementById("next-button").style.display = "block";
         }
 
@@ -949,31 +986,24 @@
             consecutiveCorrect = 0;
             currentWrongCount++;
             document.getElementById("combo-display").style.display = "none";
-            document.getElementById("points-feedback").textContent = "נגמר הזמן";
+            document.getElementById("points-feedback").textContent = "谞讙诪专 讛讝诪谉";
             playSound("wrong");
-
             const currentQuestion = gameQuestions[currentIndex];
             addMistake(currentQuestion);
-
             if (selectedGameMode === "challenge") {
                 lives--;
-                document.getElementById("lives-display").textContent = "❤️".repeat(lives);
+                document.getElementById("lives-display").textContent = "鉂わ笍".repeat(lives);
             }
-
-            const allButtons = document.querySelectorAll(".option-btn");
-            allButtons.forEach(button => {
+            document.querySelectorAll(".option-btn").forEach(button => {
                 button.disabled = true;
                 if (button.textContent === currentQuestion.answer) button.classList.add("correct");
             });
-
             showAnswerExplanation(currentQuestion);
-
             if (selectedGameMode === "challenge" && lives <= 0) {
                 document.getElementById("next-button").style.display = "none";
-                setTimeout(() => endGame(false), 1200);
+                setTimeout(() => endGame(false), 1000);
                 return;
             }
-
             document.getElementById("next-button").style.display = "block";
         }
 
@@ -988,34 +1018,12 @@
         }
 
         function getScoreTitle(finalScore) {
-            if (finalScore >= 14000) return { title: "English God", icons: "👑✨" };
-            if (finalScore >= 13000) return { title: "English AI", icons: "🤖" };
-            if (finalScore >= 12000) return { title: "Grammar Alien III", icons: "👽👽👽" };
-            if (finalScore >= 11000) return { title: "Grammar Alien II", icons: "👽👽" };
-            if (finalScore >= 10000) return { title: "Grammar Alien I", icons: "👽" };
-            if (finalScore >= 9000) return { title: "Boss III", icons: "👑👑👑" };
-            if (finalScore >= 8000) return { title: "Boss II", icons: "👑👑" };
-            if (finalScore >= 7000) return { title: "Boss I", icons: "👑" };
-            if (finalScore >= 6000) return { title: "Wizard III", icons: "🧙‍♂️🧙‍♂️🧙‍♂️" };
-            if (finalScore >= 5000) return { title: "Wizard II", icons: "🧙‍♂️🧙‍♂️" };
-            if (finalScore >= 4000) return { title: "Wizard I", icons: "🧙‍♂️" };
-            if (finalScore >= 3000) return { title: "Knight III", icons: "🛡️🛡️🛡️" };
-            if (finalScore >= 2500) return { title: "Knight II", icons: "🛡️🛡️" };
-            if (finalScore >= 2000) return { title: "Knight I", icons: "🛡️" };
-            if (finalScore >= 1500) return { title: "Archer III", icons: "🏹🏹🏹" };
-            if (finalScore >= 1200) return { title: "Archer II", icons: "🏹🏹" };
-            if (finalScore >= 900) return { title: "Archer I", icons: "🏹" };
-            if (finalScore >= 600) return { title: "Peasant III", icons: "🧑‍🌾🧑‍🌾🧑‍🌾" };
-            if (finalScore >= 400) return { title: "Peasant II", icons: "🧑‍🌾🧑‍🌾" };
-            if (finalScore >= 200) return { title: "Peasant I", icons: "🧑‍🌾" };
-            if (finalScore >= 50) return { title: "Grammar Worm", icons: "🐛" };
-            return { title: "Egg / Novice", icons: "🥚" };
+            return titleLevels.find(level => finalScore >= level.min) || titleLevels[titleLevels.length - 1];
         }
 
         function saveGameStats(titleFullString) {
             const savedHighScore = getStorageNumber(STORAGE_KEYS.highScore);
             const highscoreAlert = document.getElementById("highscore-alert");
-
             if (score > savedHighScore) {
                 localStorage.setItem(STORAGE_KEYS.highScore, String(score));
                 localStorage.setItem(STORAGE_KEYS.highTitle, titleFullString);
@@ -1023,7 +1031,6 @@
             } else {
                 highscoreAlert.style.display = "none";
             }
-
             localStorage.setItem(STORAGE_KEYS.gamesPlayed, String(getStorageNumber(STORAGE_KEYS.gamesPlayed) + 1));
             localStorage.setItem(STORAGE_KEYS.totalCorrect, String(getStorageNumber(STORAGE_KEYS.totalCorrect) + currentCorrectCount));
             localStorage.setItem(STORAGE_KEYS.totalWrong, String(getStorageNumber(STORAGE_KEYS.totalWrong) + currentWrongCount));
@@ -1034,37 +1041,33 @@
             gameEnded = true;
             clearInterval(timerInterval);
             switchScreen("end-screen");
-
             const titleData = getScoreTitle(score);
             const titleFullString = `${titleData.icons} ${titleData.title}`;
             saveGameStats(titleFullString);
-
             const endTitle = document.getElementById("end-title");
             const endSubtitle = document.getElementById("end-subtitle");
             const finalLevel = document.getElementById("final-level");
 
             if (selectedGameMode === "practice") {
-                endTitle.textContent = "התרגול הסתיים";
+                endTitle.textContent = "讛转专讙讜诇 讛住转讬讬诐";
                 endTitle.style.color = "var(--primary)";
-                endSubtitle.textContent = "סיימת את כל 30 השאלות. עכשיו כדאי לעבור על דוח המילים לחזרה.";
-                finalLevel.textContent = "סיימת את כל 30 השאלות במצב תרגול.";
+                endSubtitle.textContent = "住讬讬诪转 讗转 讻诇 30 讛砖讗诇讜转. 注讻砖讬讜 讻讚讗讬 诇注讘讜专 注诇 讚讜讞 讛诪讬诇讬诐 诇讞讝专讛.";
+                finalLevel.textContent = "住讬讬诪转 讗转 讻诇 30 讛砖讗诇讜转 讘诪爪讘 转专讙讜诇.";
             } else if (isWin) {
-                endTitle.textContent = currentWrongCount === 0 ? "PERFECT VICTORY 🏆" : "VICTORY 🏆";
+                endTitle.textContent = currentWrongCount === 0 ? "PERFECT VICTORY 馃弳" : "VICTORY 馃弳";
                 endTitle.style.color = "var(--primary)";
-                endSubtitle.textContent = currentWrongCount === 0
-                    ? "משחק מושלם. סיימת את כל 30 השאלות בלי טעויות."
-                    : "סיימת את כל 30 השאלות.";
-                finalLevel.textContent = "סיימת את כל 30 השאלות!";
+                endSubtitle.textContent = currentWrongCount === 0 ? "诪砖讞拽 诪讜砖诇诐. 住讬讬诪转 讘诇讬 讟注讜讬讜转." : "住讬讬诪转 讗转 讻诇 30 讛砖讗诇讜转.";
+                finalLevel.textContent = "住讬讬诪转 讗转 讻诇 30 讛砖讗诇讜转!";
             } else {
-                endTitle.textContent = "נגמרו החיים 💔";
+                endTitle.textContent = "谞讙诪专讜 讛讞讬讬诐 馃挃";
                 endTitle.style.color = "var(--error)";
-                endSubtitle.textContent = "הזמן או הטעויות הכניעו אותך בסיבוב הזה.";
-                finalLevel.textContent = `נעצרת בשאלה מספר ${Math.min(currentIndex + 1, gameQuestions.length)}`;
+                endSubtitle.textContent = "讛讝诪谉 讗讜 讛讟注讜讬讜转 讛讻谞讬注讜 讗讜转讱 讘住讬讘讜讘 讛讝讛.";
+                finalLevel.textContent = `谞注爪专转 讘砖讗诇讛 诪住驻专 ${Math.min(currentIndex + 1, gameQuestions.length)}`;
             }
 
-            document.getElementById("final-score").textContent = `ניקוד סופי: ${score} נקודות`;
-            document.getElementById("final-correct").textContent = `תשובות נכונות: ${currentCorrectCount}`;
-            document.getElementById("final-wrong").textContent = `טעויות / פספוסים: ${currentWrongCount}`;
+            document.getElementById("final-score").textContent = `谞讬拽讜讚 住讜驻讬: ${score} 谞拽讜讚讜转`;
+            document.getElementById("final-correct").textContent = `转砖讜讘讜转 谞讻讜谞讜转: ${currentCorrectCount}`;
+            document.getElementById("final-wrong").textContent = `讟注讜讬讜转 / 驻住驻讜住讬诐: ${currentWrongCount}`;
             document.getElementById("final-badge").textContent = titleFullString;
             renderMistakeReport();
         }
@@ -1074,29 +1077,23 @@
             const reportContainer = document.getElementById("report-container");
             const reportTitle = document.getElementById("report-title");
             const perfectMessage = document.getElementById("perfect-message");
-
             reportList.textContent = "";
             perfectMessage.style.display = "none";
             reportTitle.style.display = "block";
             reportList.style.display = "block";
-
             if (mistakesList.length > 0) {
                 reportContainer.style.display = "block";
                 reportContainer.style.backgroundColor = "#fff5f5";
                 reportContainer.style.borderColor = "#ffccd0";
-
                 mistakesList.forEach(question => {
                     const listItem = document.createElement("li");
                     listItem.className = "mistake-item";
-
                     const englishWord = document.createElement("span");
                     englishWord.className = "mistake-eng";
                     englishWord.textContent = question.keyword;
-
                     const hebrewTranslation = document.createElement("span");
                     hebrewTranslation.className = "mistake-heb";
                     hebrewTranslation.textContent = question.translation;
-
                     listItem.appendChild(englishWord);
                     listItem.appendChild(hebrewTranslation);
                     reportList.appendChild(listItem);
@@ -1109,6 +1106,37 @@
                 reportList.style.display = "none";
                 perfectMessage.style.display = "block";
             }
+        }
+
+        function runAutoTestIfNeeded() {
+            const params = new URLSearchParams(window.location.search);
+            if (!params.has("autotest") || window.__autoTestRan) return;
+            window.__autoTestRan = true;
+            selectedGameMode = "challenge";
+            gameQuestions = [...masterVocabularyDatabase]
+                .sort((a, b) => (b.sentence.length + Math.max(...b.options.map(o => o.length))) - (a.sentence.length + Math.max(...a.options.map(o => o.length))))
+                .slice(0, QUESTIONS_PER_GAME);
+            resetGameState();
+            switchScreen("game-screen");
+            loadQuestion();
+            clearInterval(timerInterval);
+            setTimeout(() => {
+                const container = document.getElementById("game-container");
+                const metrics = {
+                    ok: document.documentElement.scrollHeight <= window.innerHeight + 2 && container.scrollHeight <= container.clientHeight + 2,
+                    viewport: { width: window.innerWidth, height: window.innerHeight },
+                    documentScrollHeight: document.documentElement.scrollHeight,
+                    containerClientHeight: container.clientHeight,
+                    containerScrollHeight: container.scrollHeight,
+                    badge: document.getElementById("task-badge-element").textContent,
+                    questionCount: masterVocabularyDatabase.length,
+                    sentence: document.getElementById("sentence-text").textContent
+                };
+                const pre = document.createElement("pre");
+                pre.id = "autotest-result";
+                pre.textContent = JSON.stringify(metrics);
+                document.body.appendChild(pre);
+            }, 300);
         }
 
         document.addEventListener("DOMContentLoaded", () => showStartScreen());
