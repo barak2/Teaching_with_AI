@@ -1,0 +1,242 @@
+[
+  {
+    "type": "completion",
+    "sentence": "The scientist made an important ___ in the lab.",
+    "keyword": "discovery",
+    "translation": "תגלית",
+    "answer": "discovery",
+    "options": ["discovery", "argument", "journey", "weather"]
+  },
+  {
+    "type": "completion",
+    "sentence": "Students must ___ their homework on time.",
+    "keyword": "submit",
+    "translation": "להגיש",
+    "answer": "submit",
+    "options": ["submit", "borrow", "forget", "arrive"]
+  },
+  {
+    "type": "completion",
+    "sentence": "The teacher gave a clear ___ of the new rule.",
+    "keyword": "explanation",
+    "translation": "הסבר",
+    "answer": "explanation",
+    "options": ["explanation", "invitation", "temperature", "accident"]
+  },
+  {
+    "type": "completion",
+    "sentence": "It is important to ___ healthy food every day.",
+    "keyword": "consume",
+    "translation": "לצרוך",
+    "answer": "consume",
+    "options": ["consume", "repair", "invite", "measure"]
+  },
+  {
+    "type": "completion",
+    "sentence": "The company decided to ___ a new product next month.",
+    "keyword": "launch",
+    "translation": "להשיק",
+    "answer": "launch",
+    "options": ["launch", "whisper", "borrow", "compare"]
+  },
+  {
+    "type": "completion",
+    "sentence": "The police tried to ___ the cause of the accident.",
+    "keyword": "investigate",
+    "translation": "לחקור",
+    "answer": "investigate",
+    "options": ["investigate", "celebrate", "decorate", "translate"]
+  },
+  {
+    "type": "completion",
+    "sentence": "A good friend will always ___ you when you need help.",
+    "keyword": "support",
+    "translation": "לתמוך",
+    "answer": "support",
+    "options": ["support", "damage", "refuse", "hide"]
+  },
+  {
+    "type": "completion",
+    "sentence": "We should ___ plastic waste to protect the environment.",
+    "keyword": "reduce",
+    "translation": "להפחית",
+    "answer": "reduce",
+    "options": ["reduce", "increase", "collect", "invent"]
+  },
+  {
+    "type": "completion",
+    "sentence": "The article tries to ___ why teenagers use social media.",
+    "keyword": "explain",
+    "translation": "להסביר",
+    "answer": "explain",
+    "options": ["explain", "escape", "divide", "feed"]
+  },
+  {
+    "type": "completion",
+    "sentence": "This medicine may ___ your ability to drive.",
+    "keyword": "affect",
+    "translation": "להשפיע",
+    "answer": "affect",
+    "options": ["affect", "expect", "respect", "collect"]
+  },
+  {
+    "type": "synonym",
+    "sentence": "Choose the synonym of: quick",
+    "keyword": "quick",
+    "translation": "מהיר",
+    "answer": "fast",
+    "options": ["fast", "slow", "late", "heavy"]
+  },
+  {
+    "type": "synonym",
+    "sentence": "Choose the synonym of: difficult",
+    "keyword": "difficult",
+    "translation": "קשה",
+    "answer": "hard",
+    "options": ["hard", "simple", "bright", "silent"]
+  },
+  {
+    "type": "synonym",
+    "sentence": "Choose the synonym of: begin",
+    "keyword": "begin",
+    "translation": "להתחיל",
+    "answer": "start",
+    "options": ["start", "finish", "sleep", "carry"]
+  },
+  {
+    "type": "synonym",
+    "sentence": "Choose the synonym of: large",
+    "keyword": "large",
+    "translation": "גדול",
+    "answer": "big",
+    "options": ["big", "tiny", "weak", "empty"]
+  },
+  {
+    "type": "synonym",
+    "sentence": "Choose the synonym of: smart",
+    "keyword": "smart",
+    "translation": "חכם",
+    "answer": "intelligent",
+    "options": ["intelligent", "angry", "hungry", "careless"]
+  },
+  {
+    "type": "synonym",
+    "sentence": "Choose the synonym of: important",
+    "keyword": "important",
+    "translation": "חשוב",
+    "answer": "significant",
+    "options": ["significant", "ordinary", "cheap", "temporary"]
+  },
+  {
+    "type": "synonym",
+    "sentence": "Choose the synonym of: help",
+    "keyword": "help",
+    "translation": "עזרה",
+    "answer": "assist",
+    "options": ["assist", "ignore", "break", "travel"]
+  },
+  {
+    "type": "synonym",
+    "sentence": "Choose the synonym of: mistake",
+    "keyword": "mistake",
+    "translation": "טעות",
+    "answer": "error",
+    "options": ["error", "answer", "plan", "gift"]
+  },
+  {
+    "type": "synonym",
+    "sentence": "Choose the synonym of: idea",
+    "keyword": "idea",
+    "translation": "רעיון",
+    "answer": "concept",
+    "options": ["concept", "noise", "corner", "ticket"]
+  },
+  {
+    "type": "synonym",
+    "sentence": "Choose the synonym of: improve",
+    "keyword": "improve",
+    "translation": "לשפר",
+    "answer": "make better",
+    "options": ["make better", "make worse", "give up", "fall down"]
+  },
+  {
+    "type": "odd",
+    "sentence": "Choose the odd word out:",
+    "keyword": "car",
+    "translation": "מכונית",
+    "answer": "car",
+    "options": ["apple", "banana", "orange", "car"]
+  },
+  {
+    "type": "odd",
+    "sentence": "Choose the odd word out:",
+    "keyword": "chair",
+    "translation": "כיסא",
+    "answer": "chair",
+    "options": ["dog", "cat", "horse", "chair"]
+  },
+  {
+    "type": "odd",
+    "sentence": "Choose the odd word out:",
+    "keyword": "winter",
+    "translation": "חורף",
+    "answer": "winter",
+    "options": ["red", "blue", "green", "winter"]
+  },
+  {
+    "type": "odd",
+    "sentence": "Choose the odd word out:",
+    "keyword": "computer",
+    "translation": "מחשב",
+    "answer": "computer",
+    "options": ["soccer", "basketball", "tennis", "computer"]
+  },
+  {
+    "type": "odd",
+    "sentence": "Choose the odd word out:",
+    "keyword": "teacher",
+    "translation": "מורה",
+    "answer": "teacher",
+    "options": ["Monday", "Tuesday", "Friday", "teacher"]
+  },
+  {
+    "type": "odd",
+    "sentence": "Choose the odd word out:",
+    "keyword": "river",
+    "translation": "נהר",
+    "answer": "river",
+    "options": ["shirt", "jacket", "socks", "river"]
+  },
+  {
+    "type": "odd",
+    "sentence": "Choose the odd word out:",
+    "keyword": "doctor",
+    "translation": "רופא",
+    "answer": "doctor",
+    "options": ["January", "March", "August", "doctor"]
+  },
+  {
+    "type": "odd",
+    "sentence": "Choose the odd word out:",
+    "keyword": "mountain",
+    "translation": "הר",
+    "answer": "mountain",
+    "options": ["milk", "water", "juice", "mountain"]
+  },
+  {
+    "type": "odd",
+    "sentence": "Choose the odd word out:",
+    "keyword": "book",
+    "translation": "ספר",
+    "answer": "book",
+    "options": ["run", "jump", "swim", "book"]
+  },
+  {
+    "type": "odd",
+    "sentence": "Choose the odd word out:",
+    "keyword": "phone",
+    "translation": "טלפון",
+    "answer": "phone",
+    "options": ["happy", "sad", "angry", "phone"]
+  }
+]
